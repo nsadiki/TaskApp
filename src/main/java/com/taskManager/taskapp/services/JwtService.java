@@ -1,7 +1,5 @@
 package com.taskManager.taskapp.services;
 
-
-import com.taskManager.taskapp.dto.UserDto;
 import com.taskManager.taskapp.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -29,12 +27,6 @@ public class JwtService {
     private long jwtExpiration;
 
 
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
     public Claims extractAllClaims(String token){
         return Jwts
                 .parserBuilder()
@@ -43,6 +35,12 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
 
     public String extractUserName(String token){
         return extractClaim(token, Claims::getSubject);
@@ -75,6 +73,15 @@ public class JwtService {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
 
+    }
+
+    public boolean isTokenExpired(String token){
+        return extractExpiration(token).before(new Date());
+    }
+
+    public boolean isTokenValid(String token, User user){
+        final String username = extractUserName(token);
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 
 }
