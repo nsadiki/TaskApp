@@ -27,7 +27,7 @@ public class Task {
     private LocalDateTime dueDate;
 
     @Column(nullable = false, unique = false)
-    private String Status;
+    private String status;
 
     @ManyToOne
     private User user;

@@ -8,22 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     public UserService userService;
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public User registerUser(@RequestParam UserDto user){
         return userService.registerUser(user);
     }
 
-    @DeleteMapping("/user/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long userId){
         userService.deleteUser(userId);
     }
 
-    @GetMapping("/user/getUser/{email}")
+    @GetMapping("/getUser/{email}")
     public User getUser(@PathVariable String email){
         return userService.getUserByEmail("email");
     }

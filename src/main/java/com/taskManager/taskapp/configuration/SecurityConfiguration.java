@@ -6,17 +6,25 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter;
 
 @Configuration
 public class SecurityConfiguration {
 
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> { csrf.disable(); csrf.ignoringRequestMatchers("/h2-console/**");})
-                .authorizeRequests()
-                .requestMatchers("/public/**", "/register", "/authenticate", "/**","/h2-console/**").permitAll()
-                .anyRequest().authenticated();
-
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll()
+                )
+                .headers(headers -> headers
+                        .frameOptions(frameOption -> frameOption.sameOrigin())
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**").disable()
+                );
         return http.build();
     }
 
