@@ -5,6 +5,17 @@ import lombok.Data;
 @Data
 public class UserDto {
 
+    public UserDto(String username, String email, String password){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+
+    }
+
+    public UserDto() {
+
+    }
+
     private Long id;
 
     private String username;
@@ -12,6 +23,7 @@ public class UserDto {
     private String email;
 
     private String password;
+
 
 
 }

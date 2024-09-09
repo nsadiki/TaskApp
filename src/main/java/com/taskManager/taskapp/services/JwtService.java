@@ -1,13 +1,12 @@
 package com.taskManager.taskapp.services;
 
-import com.taskManager.taskapp.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -20,11 +19,12 @@ import java.util.function.Function;
 @Data
 public class JwtService {
 
-    @Value("${security.jwt.secret.key}")
-    private String secretKey;
+    //@Value("${security.jwt.secret.key}")
+    private String secretKey = "3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b";
 
-    @Value("${security.jwt.expiration-time}")
-    private long jwtExpiration;
+    //@Value("${security.jwt.expiration-time}")
+    private long jwtExpiration = 3600000;
+
 
 
     public Claims extractAllClaims(String token){
@@ -51,12 +51,12 @@ public class JwtService {
     }
 
 
-    public String generateToken(User user){
-        return generateToken(new HashMap<>(), user);
+    public String generateToken(UserDetails userDetails){
+        return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, User user){
-        return buildToken(extraClaims,user, jwtExpiration);
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+        return buildToken(extraClaims,userDetails, jwtExpiration);
 
     }
     private Key getSignInKey() {
@@ -64,10 +64,10 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, User user, long expiration) {
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(user.getUsername())
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -79,9 +79,9 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public boolean isTokenValid(String token, User user){
+    public boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUserName(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 }

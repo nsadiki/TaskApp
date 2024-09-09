@@ -8,6 +8,13 @@ import java.time.LocalDateTime;
 @Data
 public class TaskDto {
 
+    public TaskDto(String title, String description, LocalDateTime dueDate,String status){
+        this.title = title;
+        this.description= description;
+        this .dueDate = dueDate;
+        this.status = status;
+    }
+
     private Long id;
 
     private String title;
@@ -16,5 +23,7 @@ public class TaskDto {
 
     private LocalDateTime dueDate;
 
-    private String Status;
+    private String status;
+
+    private Long userId;
 }

@@ -2,9 +2,12 @@ package com.taskManager.taskapp.services;
 
 
 import com.taskManager.taskapp.dto.TaskDto;
+import com.taskManager.taskapp.dto.UserDto;
 import com.taskManager.taskapp.entities.Task;
+import com.taskManager.taskapp.entities.User;
 import com.taskManager.taskapp.mapper.MapDtoToEntity;
 import com.taskManager.taskapp.repositories.TaskRepository;
+import com.taskManager.taskapp.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,23 @@ public class TaskService {
     public TaskRepository taskRepository;
 
     @Autowired
+    public UserRepository userRepository;
+
+    @Autowired
     public MapDtoToEntity mapDtoToEntity;
 
 
     @Transactional
-    public Task createTask(TaskDto task){
-        return taskRepository.save(mapDtoToEntity.mapTaskDtotoEntity(task));
+    public Task createTask(TaskDto taskDto){
+
+            Task task = taskRepository.save(mapDtoToEntity.mapTaskDtotoEntity(taskDto));
+            Optional<User> user = userRepository.findById(taskDto.getUserId());
+        if(user.isPresent()){
+            task.setUser(user.get());
+        }else{
+            throw new RuntimeException("User not found" + taskDto.getUserId());
+        }
+        return taskRepository.save(task);
     }
 
     @Transactional

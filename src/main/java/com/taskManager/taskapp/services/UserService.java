@@ -1,6 +1,5 @@
 package com.taskManager.taskapp.services;
 
-
 import com.taskManager.taskapp.dto.UserDto;
 import com.taskManager.taskapp.entities.User;
 import com.taskManager.taskapp.mapper.MapDtoToEntity;
@@ -8,7 +7,6 @@ import com.taskManager.taskapp.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -23,7 +21,7 @@ public class UserService {
 
 
     public User getUserByEmail(String email){
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public List<User> getAllUser(){

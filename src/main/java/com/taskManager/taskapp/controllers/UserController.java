@@ -20,12 +20,12 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Long userId){
-        userService.deleteUser(userId);
+    public void deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
     }
 
     @GetMapping("/getUser/{email}")
     public User getUser(@PathVariable String email){
-        return userService.getUserByEmail("email");
+        return userService.getUserByEmail(email);
     }
 }

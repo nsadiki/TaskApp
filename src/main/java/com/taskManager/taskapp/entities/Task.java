@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name="tasks")
 public class Task {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +31,7 @@ public class Task {
     private String status;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
 
