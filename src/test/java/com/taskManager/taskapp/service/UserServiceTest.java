@@ -3,7 +3,6 @@ package com.taskManager.taskapp.service;
 
 import com.taskManager.taskapp.dto.UserDto;
 import com.taskManager.taskapp.entities.User;
-import com.taskManager.taskapp.mapper.MapDtoToEntity;
 import com.taskManager.taskapp.repositories.UserRepository;
 import com.taskManager.taskapp.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,13 +19,11 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private MapDtoToEntity mapDtoToEntity;
 
     @InjectMocks
     private UserService userService;
@@ -41,7 +39,7 @@ public class UserServiceTest {
         user.setEmail("test@example.com");
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
 
-        User result = userService.getUserByEmail("test@example.com");
+        UserDto result = userService.getUserByEmail("test@example.com");
         assertNotNull(result);
         assertEquals("test@example.com", result.getEmail());
     }
@@ -49,8 +47,7 @@ public class UserServiceTest {
     @Test
     void testGetUserByEmailUserDoesNotExist() {
         when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
-
-        User result = userService.getUserByEmail("nonexistent@example.com");
+        UserDto result = userService.getUserByEmail("nonexistent@example.com");
         assertNull(result);
     }
 
@@ -59,8 +56,7 @@ public class UserServiceTest {
         User user1 = new User();
         User user2 = new User();
         when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
-
-        List<User> result = userService.getAllUser();
+        List<UserDto> result = userService.getAllUser();
         assertEquals(2, result.size());
     }
 
@@ -68,7 +64,6 @@ public class UserServiceTest {
     void testRegisterUser() {
         UserDto userDto = new UserDto();
         User user = new User();
-        when(mapDtoToEntity.mapUserDtoToEntity(userDto)).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
 
         User result = userService.registerUser(userDto);

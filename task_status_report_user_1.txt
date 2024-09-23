@@ -1,0 +1,6 @@
+Nom de l'utilisateur: user1
+Nombre de tâche : 2
+Nombre de tâche par status:
+Status: Done1
+Status: In Progress1
+Status: Backlog1

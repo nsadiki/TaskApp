@@ -15,6 +15,15 @@ import java.util.List;
 @Table(name="users")
 public class User implements UserDetails {
 
+    public User(){
+
+    }
+
+    public User(String email, String username){
+        this.email=email;
+        this.username=username;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,5 +63,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public void setName(String johnDoe) {
+
     }
 }

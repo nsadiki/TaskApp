@@ -36,11 +36,11 @@ public class ReportingService {
                     .collect(Collectors.groupingBy(Task::getStatus, Collectors.counting()));
 
             StringBuilder reportContent = new StringBuilder();
-            reportContent.append("User name: ").append(user.getUsername()).append("\n");
-            reportContent.append("Number of tasks : ").append(tasks.size()-1).append("\n");
-            reportContent.append("Task Counts by Status:\n");
+            reportContent.append("Nom de l'utilisateur: ").append(user.getUsername()).append("\n");
+            reportContent.append("Nombre de tâche : ").append(tasks.size()-1).append("\n");
+            reportContent.append("Nombre de tâche par status:\n");
             statusCounts.forEach((status, count) ->
-                    reportContent.append("Status: ").append(status).append(" - Count: ").append(count).append("\n")
+                    reportContent.append("Status: ").append(status).append(count).append("\n")
             );
 
             writeReportToFile(userId, reportContent.toString());

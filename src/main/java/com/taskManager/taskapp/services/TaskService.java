@@ -1,11 +1,10 @@
 package com.taskManager.taskapp.services;
 
-
 import com.taskManager.taskapp.dto.TaskDto;
-import com.taskManager.taskapp.dto.UserDto;
 import com.taskManager.taskapp.entities.Task;
 import com.taskManager.taskapp.entities.User;
 import com.taskManager.taskapp.mapper.MapDtoToEntity;
+import com.taskManager.taskapp.mapper.MapEntityToDto;
 import com.taskManager.taskapp.repositories.TaskRepository;
 import com.taskManager.taskapp.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -28,18 +27,21 @@ public class TaskService {
     @Autowired
     public MapDtoToEntity mapDtoToEntity;
 
+    @Autowired
+    public MapEntityToDto mapEntityToDto;
+
 
     @Transactional
-    public Task createTask(TaskDto taskDto){
+    public TaskDto createTask(TaskDto taskDto){
 
-            Task task = taskRepository.save(mapDtoToEntity.mapTaskDtotoEntity(taskDto));
-            Optional<User> user = userRepository.findById(taskDto.getUserId());
+        Task task = taskRepository.save(mapDtoToEntity.mapTaskDtotoEntity(taskDto));
+        Optional<User> user = userRepository.findById(taskDto.getUserId());
         if(user.isPresent()){
             task.setUser(user.get());
         }else{
             throw new RuntimeException("User not found" + taskDto.getUserId());
         }
-        return taskRepository.save(task);
+        return mapEntityToDto.mapTaskEntityToDto(taskRepository.save(task));
     }
 
     @Transactional
@@ -48,20 +50,20 @@ public class TaskService {
     }
 
     @Transactional
-    public Task updateTask(Long id, TaskDto task) {
+    public TaskDto updateTask(Long id, TaskDto task) {
         Optional<Task> existingTask = taskRepository.findById(id);
         return existingTask.map(t -> {
                     t.setTitle(task.getTitle());
                     t.setDescription(task.getDescription());
                     t.setDueDate(task.getDueDate());
                     t.setStatus(task.getStatus());
-                    return taskRepository.save(t);
+                    return mapEntityToDto.mapTaskEntityToDto(taskRepository.save(t));
                 }).orElse(null);
 
     }
 
-    public List<Task> getTaskByUser(Long userId){
-       return taskRepository.findByUserId(userId);
+    public List<TaskDto> getTaskByUser(Long userId){
+       return mapEntityToDto.mapTaskListEntityToDto(taskRepository.findByUserId(userId));
     }
 
 }

@@ -15,8 +15,10 @@ public class MapDtoToEntity {
 
     ModelMapper modelMapper = new ModelMapper();
 
+
     public Task mapTaskDtotoEntity (TaskDto taskDto){
         Task taskEntity = new Task();
+
         return modelMapper.map(taskDto, Task.class);
 //        return Optional.ofNullable(taskDto).map(t -> {
 //            taskEntity.setId(taskDto.getId());
@@ -38,7 +40,7 @@ public class MapDtoToEntity {
    }
 
    public List<User> mapListOfUserDtoToEntity(List<UserDto> users){
-        return Optional.ofNullable(users).stream().map(item -> modelMapper.map(item, User.class))
+        return users.stream().map(user -> modelMapper.map(user, User.class))
                 .toList();
     }
 

@@ -3,9 +3,9 @@ package com.taskManager.taskapp.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,7 +25,7 @@ public class Task {
     private String description;
 
     @Column(nullable = false, unique = false)
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false, unique = false)
     private String status;

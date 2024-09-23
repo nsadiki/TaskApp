@@ -17,6 +17,6 @@ public class ReportingController {
     @GetMapping("/generate/{userId}")
     public String generateReport(@PathVariable Long userId) {
         reportingService.generateReportForUser(userId);
-        return "Report generation started.";
+        return "Report started.";
     }
 }
