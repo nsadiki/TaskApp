@@ -40,7 +40,7 @@ public class ReportingService {
             reportContent.append("Nombre de tâche : ").append(tasks.size()-1).append("\n");
             reportContent.append("Nombre de tâche par status:\n");
             statusCounts.forEach((status, count) ->
-                    reportContent.append("Status: ").append(status).append(count).append("\n")
+                    reportContent.append("Status: ").append(status).append( " - nombre de tâche : ").append(count).append("\n")
             );
 
             writeReportToFile(userId, reportContent.toString());

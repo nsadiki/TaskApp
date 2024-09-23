@@ -1,4 +1,0 @@
-Nom de l'utilisateur: user4
-Nombre de tâche : 3
-Nombre de tâche par status:
-Status: Backlog4
