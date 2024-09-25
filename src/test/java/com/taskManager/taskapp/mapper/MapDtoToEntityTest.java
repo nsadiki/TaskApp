@@ -15,7 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class MapDtoToEntityTest {
 
@@ -86,6 +87,9 @@ class MapDtoToEntityTest {
 
         List<Task> tasks = mapDtoToEntity.mapListOfTaskDtoToEntity(Arrays.asList(taskDto));
 
+        verify(modelMapper, times(1)).map(any(),any());
+
+
         assertNotNull(tasks);
         assertEquals(1, tasks.size());
         assertEquals("Test Task", tasks.get(0).getTitle());
@@ -96,11 +100,13 @@ class MapDtoToEntityTest {
     void mapListOfUserDtoToEntityShouldMapUserDtoListToUserEntityList() {
         User userMock = new User();
         userMock.setId(1L);
-        userMock.setName("John Doe");
+        userMock.setUsername("John Doe");
 
         when(modelMapper.map(userDto, User.class)).thenReturn(userMock);
 
         List<User> users = mapDtoToEntity.mapListOfUserDtoToEntity(Arrays.asList(userDto));
+
+        verify(modelMapper, times(1)).map(any(),any());
 
         assertNotNull(users);
         assertEquals(1, users.size());

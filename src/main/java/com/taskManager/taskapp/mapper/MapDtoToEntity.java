@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class MapDtoToEntity {
@@ -36,12 +37,13 @@ public class MapDtoToEntity {
    }
 
    public List<Task> mapListOfTaskDtoToEntity(List<TaskDto> tasks){
-        return Optional.ofNullable(tasks).stream().map(item -> modelMapper.map(item, Task.class)).toList();
+        return tasks.stream().map(item -> modelMapper.map(item, Task.class))
+                .collect(Collectors.toList());
    }
 
    public List<User> mapListOfUserDtoToEntity(List<UserDto> users){
         return users.stream().map(user -> modelMapper.map(user, User.class))
-                .toList();
+                .collect(Collectors.toList());
     }
 
 }

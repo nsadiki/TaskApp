@@ -65,7 +65,5 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public void setName(String johnDoe) {
 
-    }
 }

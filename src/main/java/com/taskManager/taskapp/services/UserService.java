@@ -26,14 +26,14 @@ public class UserService {
     @Autowired
     private MapEntityToDto mapEntityToDto;
 
-    private static final Logger logger = LoggerFactory.getLogger((UserService.class));
 
+    private static final Logger logger = LoggerFactory.getLogger((UserService.class));
 
 
     public UserDto getUserByEmail(String email){
 
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new EntityNotFoundException("Request has a problem")
+                () -> new EntityNotFoundException("User not found")
         );
         return mapEntityToDto.mapUserEntitytoDto(user);
     }

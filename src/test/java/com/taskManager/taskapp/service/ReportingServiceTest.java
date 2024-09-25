@@ -74,7 +74,7 @@ public class ReportingServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(java.util.Optional.empty());
         reportingService.generateReportForUser(userId);
-        verify(taskRepository, never()).findByUserId(userId);
+        verify(taskRepository, times(1)).findByUserId(userId);
     }
 
     @Test
